@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "json_parser"
   gem.require_paths = ["lib"]
   gem.version       = JsonParser::VERSION
+
+  gem.add_development_dependency("rspec", "~> 2.12.0")
 end
