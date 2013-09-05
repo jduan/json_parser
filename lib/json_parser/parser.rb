@@ -4,22 +4,10 @@ module JsonParser
   class Parser
     def parse(str)
       ss = StringScanner.new(str)
-      parse_internal(ss)
+      parse_value(ss)
     end
 
     private
-
-    def parse_internal(ss)
-      remove_leading_spaces(ss)
-      case ss.peek(1)
-      when "{"
-        parse_hash(ss)
-      when "["
-        parse_array(ss)
-      else
-        parse_value(ss)
-      end
-    end
 
     def parse_value(ss)
       remove_leading_spaces(ss)
