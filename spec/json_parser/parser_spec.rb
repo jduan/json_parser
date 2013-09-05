@@ -20,6 +20,11 @@ module JsonParser
       Parser.new.parse(json_string).should == "hehe"
     end
 
+    it "should be able to parse a single number" do
+      json_string = '.23'
+      Parser.new.parse(json_string).should == 0.23
+    end
+
     it "should be able to parse an array" do
       json_string = %Q{["hehe", true, false]}
       Parser.new.parse(json_string).should == ["hehe", true, false]
@@ -33,6 +38,29 @@ module JsonParser
     it "should be able to parse a hash of hashes" do
       json_string = %Q{{"address": {"state": "wa", "city": "seattle"}, "age": "99"}}
       Parser.new.parse(json_string).should == {"address" => {"state" => "wa", "city" => "seattle"}, "age" => "99"}
+    end
+
+    it "should be able to parse a hash with numbers" do
+      json_string = %Q{
+      {
+        "mercury_enabled": true,
+        "mercury_endpoint": "mercury.staging.hulu.com:80",
+        "mercury_initial_retry_interval": 1000,
+        "mercury_max_failure_count": 30,
+        "mercury_max_messages_per_second": 8,
+        "mercury_max_retry_interval": 300000
+      }
+      }
+
+      expected_hash = {
+        "mercury_enabled" => true,
+        "mercury_endpoint" => "mercury.staging.hulu.com:80",
+        "mercury_initial_retry_interval" => 1000,
+        "mercury_max_failure_count" => 30,
+        "mercury_max_messages_per_second" => 8,
+        "mercury_max_retry_interval" => 300000
+      }
+      Parser.new.parse(json_string).should == expected_hash
     end
   end
 end

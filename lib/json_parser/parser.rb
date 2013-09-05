@@ -23,7 +23,6 @@ module JsonParser
 
     def parse_value(ss)
       remove_leading_spaces(ss)
-      puts "ss rest: #{ss.rest}"
       char = ss.peek(1)
       case char
       when '"'
@@ -64,6 +63,15 @@ module JsonParser
       remove_leading_spaces(ss)
       if ss.scan(/".*?"/)
         ss.matched[1..-2]
+      else
+        raise "expected string but didn't find one"
+      end
+    end
+
+    def parse_number(ss)
+      remove_leading_spaces(ss)
+      if ss.scan(/-?\d*\.?\d*/)
+        Float(ss.matched)
       else
         raise "expected string but didn't find one"
       end
