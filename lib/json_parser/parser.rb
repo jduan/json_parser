@@ -56,6 +56,7 @@ module JsonParser
 
     # TODO: handle quotes inside strings
     def parse_string(ss)
+      remove_leading_spaces(ss)
       if ss.scan(/".*?"/)
         ss.matched[1..-2]
       else
@@ -64,7 +65,24 @@ module JsonParser
     end
 
     def parse_hash(ss)
-      find_string(ss)
+      ss.getch # skip the opening {
+      hsh = {}
+      loop do
+        key = parse_string(ss)
+        parse_colon(ss)
+        value = parse_value(ss)
+        hsh[key] = value
+
+        if parse_comma(ss)
+          next
+        elsif parse_closing_curly_brace(ss)
+          break
+        else
+          raise "expected either comma or }"
+        end
+      end
+
+      hsh
     end
 
     def parse_array(ss)
@@ -90,9 +108,19 @@ module JsonParser
       ss.scan(/,/)
     end
 
+    def parse_colon(ss)
+      remove_leading_spaces(ss)
+      ss.scan(/:/)
+    end
+
     def parse_closing_square_bracket(ss)
       remove_leading_spaces(ss)
       ss.scan(/]/)
+    end
+
+    def parse_closing_curly_brace(ss)
+      remove_leading_spaces(ss)
+      ss.scan(/}/)
     end
 
     def remove_leading_spaces(ss)

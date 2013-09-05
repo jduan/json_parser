@@ -24,5 +24,10 @@ module JsonParser
       json_string = %Q{["hehe", true, false]}
       Parser.new.parse(json_string).should == ["hehe", true, false]
     end
+
+    it "should be able to parse a hash" do
+      json_string = %Q{{"name": "jingjing", "age": "99"}}
+      Parser.new.parse(json_string).should == {"name" => "jingjing", "age" => "99"}
+    end
   end
 end
