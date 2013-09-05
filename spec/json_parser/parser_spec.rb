@@ -7,8 +7,12 @@ module JsonParser
     #  Parser.new.parse(str).should == {"name" => [1, "hello"]}
     #end
 
-    it "#parse_true should parse a 'true' value" do
+    it "should be able to parse a single true value" do
       Parser.new.parse("true").should == true
+    end
+
+    it "should be able to parse a single false value" do
+      Parser.new.parse("false").should == false
     end
   end
 end
