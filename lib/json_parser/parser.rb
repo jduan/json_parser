@@ -23,6 +23,7 @@ module JsonParser
 
     def parse_value(ss)
       remove_leading_spaces(ss)
+      puts "ss rest: #{ss.rest}"
       char = ss.peek(1)
       case char
       when '"'
@@ -33,6 +34,10 @@ module JsonParser
         parse_false(ss)
       when 'n'
         parse_null(ss)
+      when '{'
+        parse_hash(ss)
+      when '['
+        parse_array(ss)
       else
         parse_number(ss)
       end

@@ -29,5 +29,10 @@ module JsonParser
       json_string = %Q{{"name": "jingjing", "age": "99"}}
       Parser.new.parse(json_string).should == {"name" => "jingjing", "age" => "99"}
     end
+
+    it "should be able to parse a hash of hashes" do
+      json_string = %Q{{"address": {"state": "wa", "city": "seattle"}, "age": "99"}}
+      Parser.new.parse(json_string).should == {"address" => {"state" => "wa", "city" => "seattle"}, "age" => "99"}
+    end
   end
 end
