@@ -22,6 +22,7 @@ module JsonParser
     end
 
     def parse_value(ss)
+      remove_leading_spaces(ss)
       char = ss.peek(1)
       case char
       when '"'
@@ -53,12 +54,45 @@ module JsonParser
       end
     end
 
+    # TODO: handle quotes inside strings
+    def parse_string(ss)
+      if ss.scan(/".*?"/)
+        ss.matched[1..-2]
+      else
+        raise "expected string but didn't find one"
+      end
+    end
+
     def parse_hash(ss)
       find_string(ss)
     end
 
-    def find_string(ss)
-      ss.scan(/\s*"(.+)"/)
+    def parse_array(ss)
+      ss.getch # skip the opening [
+      arr = []
+      loop do
+        value = parse_value(ss)
+        arr << value
+        if parse_comma(ss)
+          next
+        elsif parse_closing_square_bracket(ss)
+          break
+        else
+          raise "expect comma or ] here"
+        end
+      end
+
+      arr
+    end
+
+    def parse_comma(ss)
+      remove_leading_spaces(ss)
+      ss.scan(/,/)
+    end
+
+    def parse_closing_square_bracket(ss)
+      remove_leading_spaces(ss)
+      ss.scan(/]/)
     end
 
     def remove_leading_spaces(ss)
