@@ -1,5 +1,7 @@
-class Calculator
-  def add(a, b)
-    a + b
+module JsonParser
+  class Calculator
+    def add(a, b)
+      a + b
+    end
   end
 end
