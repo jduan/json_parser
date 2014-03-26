@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = JsonParser::VERSION
 
   gem.add_development_dependency("rspec", "~> 2.12.0")
+  gem.add_development_dependency("ci_reporter", "~> 1.9.1")
 end
